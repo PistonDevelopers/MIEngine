@@ -31,7 +31,7 @@ namespace Microsoft.MIDebugEngine
     // IDebugEngineProgram2: This interface provides simultanious debugging of multiple threads in a debuggee.
 
     [ComVisible(true)]
-    [Guid("0fc2f352-2fc1-4f80-8736-51cd1ab28f16")]
+    [Guid("9DA963FB-2C68-41BE-B6E7-1B560A9FB5BD")]
     sealed public class AD7Engine : IDebugEngine2, IDebugEngineLaunch2, IDebugProgram3, IDebugEngineProgram2, IDebugMemoryBytes2, IDebugEngine110
     {
         // used to send events to the debugger. Some examples of these events are thread create, exception thrown, module load.

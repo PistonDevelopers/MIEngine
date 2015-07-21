@@ -91,18 +91,12 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="AndroidLauncherTests.cs" />
     <Compile Include="CommandLockTests.cs" />
     <Compile Include="BasicLaunchOptionsTests.cs" />
     <Compile Include="MIResultsTests.cs" />
-    <Compile Include="NdkVersionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AndroidDebugLauncher\AndroidDebugLauncher.csproj">
-      <Project>{e0844bff-2d67-4cb0-8e2a-e9cd888f2eb0}</Project>
-      <Name>AndroidDebugLauncher</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MICore\MICore.csproj">
       <Project>{12cc862d-95b7-4224-8e16-b928c6333677}</Project>
       <Name>MICore</Name>

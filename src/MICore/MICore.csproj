@@ -55,23 +55,29 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.VisualStudio.Shell.14.0, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Shell.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\VSSDK.Shell.12.12.0.4\lib\net45\Microsoft.VisualStudio.Shell.12.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\VSSDK.Shell.Interop.7.0.4\lib\net20\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+      <Private>True</Private>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\packages\VSSDK.Shell.Interop.10.10.0.4\lib\net20\Microsoft.VisualStudio.Shell.Interop.10.0.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LaunchCommand.cs" />
@@ -123,6 +129,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>LaunchOptions.xsd</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="SetMIDebugLogging.cmd" />
     <None Include="ValidateDesignerFile.cmd" />
     <None Include="ValidateSerializer.cmd" />
@@ -134,21 +141,15 @@
       <Visible>false</Visible>
     </GenerateAssembly>
   </ItemGroup>
-  
   <ItemGroup>
-	<GlassDirCopy Include="$(OutDir)$(AssemblyName)$(TargetExt)" />
+    <GlassDirCopy Include="$(OutDir)$(AssemblyName)$(TargetExt)" />
   </ItemGroup>
-  
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\build\miengine.targets" />
-
   <!--This is a target file used to generate + validate LaunchOptions.xsd.*.cs. The way this works is that we have a baseline
   file checked in. This target will create a new one, and if it is different from the baseline, it will update the baseline.
   NOTE: We skip this step for the lab configuration to ensure that in the lab we build exsactly what is checked in.-->
-  <Target Name="BeforeBuild" 
-    Inputs="LaunchOptions.xsd;ValidateDesignerFile.cmd;ValidateSerializer.cmd" 
-    Outputs="$(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs;$(IntermediateOutputPath)\ValidateSerializer\generated-serializer.cs"
-    Condition="'$(Configuration)' != 'Debug.Lab' And '$(Configuration)' != 'Release.Lab'">
+  <Target Name="BeforeBuild" Inputs="LaunchOptions.xsd;ValidateDesignerFile.cmd;ValidateSerializer.cmd" Outputs="$(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs;$(IntermediateOutputPath)\ValidateSerializer\generated-serializer.cs" Condition="'$(Configuration)' != 'Debug.Lab' And '$(Configuration)' != 'Release.Lab'">
     <!--First validate the tools we need are where we expect-->
     <Error Condition="'$(TargetFrameworkSDKToolsDirectory)'==''" Text="TargetFrameworkSDKToolsDirectory msbuild property is undefined." />
     <Error Condition="'$(MSBuildBinPath)'==''" Text="MSBuildBinPath msbuild property is undefined" />
@@ -156,7 +157,7 @@
     <Error Condition="!Exists('$(TargetFrameworkSDKToolsDirectory)sgen.exe')" Text="sgen.exe does not exist in the TargetFrameworkSDKToolsDirectory ($(TargetFrameworkSDKToolsDirectory)xsd.exe)." />
     <Error Condition="!Exists('$(MSBuildBinPath)\csc.exe')" Text="csc.exe does not exist in MSBuildBinPath ($(MSBuildBinPath))" />
     <!--Convert the .xsd -> types -->
-    <MakeDir Condition="!Exists('$(IntermediateOutputPath)')" Directories="$(IntermediateOutputPath)"/>
+    <MakeDir Condition="!Exists('$(IntermediateOutputPath)')" Directories="$(IntermediateOutputPath)" />
     <Exec Command="&quot;$(TargetFrameworkSDKToolsDirectory)xsd.exe&quot; &quot;LaunchOptions.xsd&quot; /classes /fields /namespace:$(RootNamespace).Xml.LaunchOptions /out:&quot;$(IntermediateOutputPath).&quot;" />
     <!--Rename the file generated by xsd.exe to avoid confusion with our file called 'LaunchOptions.cs'-->
     <Move SourceFiles="$(IntermediateOutputPath)LaunchOptions.cs" DestinationFiles="$(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs" />

@@ -13,6 +13,6 @@ namespace Microsoft.MIDebugEngine
         /// This is the engine GUID of the engine. It needs to be changed here and in the registration
         /// when creating a new engine.
         /// </summary>
-        public const string EngineId = "{ea6637c6-17df-45b5-a183-0951c54243bc}";
+        public const string EngineId = "{1376B67B-DAD8-4978-9855-4A6110848475}";
     }
 }
