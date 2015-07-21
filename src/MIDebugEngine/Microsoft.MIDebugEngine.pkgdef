@@ -1,4 +1,4 @@
-﻿[$RootKey$\AD7Metrics\Engine\{EA6637C6-17DF-45B5-A183-0951C54243BC}]
+﻿[$RootKey$\AD7Metrics\Engine\{1376B67B-DAD8-4978-9855-4A6110848475}]
 ; "AddressBP"=dword:00000001
 "AlwaysLoadLocal"=dword:00000001
 "AlwaysLoadProgramProviderLocal"=dword:00000001
@@ -14,11 +14,11 @@
 "Name"="Native (MI-based)"
 "SetNextStatement"=dword:00000001
 ; "SuspendThread"=dword:00000001
-"CLSID"="{0fc2f352-2fc1-4f80-8736-51cd1ab28f16}"
+"CLSID"="{9DA963FB-2C68-41BE-B6E7-1B560A9FB5BD}"
 @="MI Debug Engine"
 "GlobalVisualizersDirectory"="$PackageFolder$"
 
-[$RootKey$\CLSID\{0fc2f352-2fc1-4f80-8736-51cd1ab28f16}]
+[$RootKey$\CLSID\{9DA963FB-2C68-41BE-B6E7-1B560A9FB5BD}]
 "Assembly"="Microsoft.MIDebugEngine"
 "Class"="Microsoft.MIDebugEngine.AD7Engine"
 "InprocServer32"="$WinDir$\SYSTEM32\MSCOREE.DLL"
