@@ -40,11 +40,11 @@ namespace MICore
 
         public static ReadOnlyCollection<LaunchCommand> CreateCollectionFromXml(Xml.LaunchOptions.Command[] source)
         {
-            LaunchCommand[] commandArray = source?.Select(x => new LaunchCommand(x.Value, x.Description, x.IgnoreFailures)).ToArray();
-            if (commandArray == null)
-            {
+            LaunchCommand[] commandArray;
+            if(source != null)
+                commandArray = source.Select(x => new LaunchCommand(x.Value, x.Description, x.IgnoreFailures)).ToArray();
+            else
                 commandArray = new LaunchCommand[0];
-            }
 
             return new ReadOnlyCollection<LaunchCommand>(commandArray);
         }
