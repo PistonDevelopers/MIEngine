@@ -253,8 +253,11 @@ namespace Microsoft.MIDebugEngine
             _pollThread = null;
             _ad7ProgramId = Guid.Empty;
 
-            debuggedProcess?.Close();
-            pollThread?.Close();
+            if(debuggedProcess != null)
+                debuggedProcess.Close();
+
+            if(pollThread != null)
+                pollThread.Close();
         }
 
         // Creates a pending breakpoint in the engine. A pending breakpoint is contains all the information needed to bind a breakpoint to 

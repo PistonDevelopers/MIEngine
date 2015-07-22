@@ -309,7 +309,7 @@ namespace MICore
                         });
                     }
 
-                    return values?.ToArray();
+                    return values == null ? null : values.ToArray();
                 }
             }
         }
