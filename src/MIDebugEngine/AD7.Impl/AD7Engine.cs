@@ -300,6 +300,8 @@ namespace Microsoft.MIDebugEngine
         // Removes the list of exceptions the IDE has set for a particular run-time architecture or language.
         int IDebugEngine2.RemoveAllSetExceptions(ref Guid guidType)
         {
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.RemoveAllSetExceptions(guidType);
             return Constants.S_OK;
         }
 
@@ -307,6 +309,8 @@ namespace Microsoft.MIDebugEngine
         // The sample engine does not support exceptions in the debuggee so this method is not actually implemented.       
         int IDebugEngine2.RemoveSetException(EXCEPTION_INFO[] pException)
         {
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.RemoveSetException(ref pException[0]);
             return Constants.S_OK;
         }
 
@@ -314,6 +318,8 @@ namespace Microsoft.MIDebugEngine
         // The sample engine does not support exceptions in the debuggee so this method is not actually implemented.
         int IDebugEngine2.SetException(EXCEPTION_INFO[] pException)
         {
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.SetException(ref pException[0]);
             return Constants.S_OK;
         }
 
@@ -398,7 +404,7 @@ namespace Microsoft.MIDebugEngine
             try
             {
                 // Note: LaunchOptions.GetInstance can be an expensive operation and may push a wait message loop
-                LaunchOptions launchOptions = LaunchOptions.GetInstance(_registryRoot, exe, args, dir, options, _engineCallback);
+                LaunchOptions launchOptions = LaunchOptions.GetInstance(_registryRoot, exe, args, dir, options, _engineCallback, TargetEngine.Native);
 
                 // We are being asked to debug a process when we currently aren't debugging anything
                 _pollThread = new WorkerThread();
@@ -410,7 +416,7 @@ namespace Microsoft.MIDebugEngine
                     {
                         try
                         {
-                            _debuggedProcess = new DebuggedProcess(true, launchOptions, _engineCallback, _pollThread, _breakpointManager, this);
+                            _debuggedProcess = new DebuggedProcess(true, launchOptions, _engineCallback, _pollThread, _breakpointManager, this, _registryRoot);
                         }
                         finally
                         {
@@ -577,10 +583,7 @@ namespace Microsoft.MIDebugEngine
         {
             AD7Thread thread = (AD7Thread)pThread;
 
-            _pollThread.RunOperation(new Operation(delegate
-            {
-                _debuggedProcess.Continue(thread.GetDebuggedThread());
-            }));
+            _pollThread.RunOperation(() => _debuggedProcess.Continue(thread.GetDebuggedThread()));
 
             return Constants.S_OK;
         }
@@ -781,10 +784,7 @@ namespace Microsoft.MIDebugEngine
         {
             AD7Thread thread = (AD7Thread)pThread;
 
-            _pollThread.RunOperation(new Operation(delegate
-            {
-                _debuggedProcess.Execute(thread.GetDebuggedThread());
-            }));
+            _pollThread.RunOperation(() => _debuggedProcess.Execute(thread.GetDebuggedThread()));
 
             return Constants.S_OK;
         }

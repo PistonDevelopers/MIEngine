@@ -129,6 +129,7 @@
     <Compile Include="VSLoader.cs" />
     <Compile Include="VsWaitLoop.cs" />
     <Compile Include="WaitLoop.cs" />
+    <Compile Include="InvalidLaunchOptionsException.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MICoreResources.resx">
