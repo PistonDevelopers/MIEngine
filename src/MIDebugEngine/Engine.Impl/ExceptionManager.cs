@@ -296,7 +296,7 @@ namespace Microsoft.MIDebugEngine
                     {
                         _lastUpdateTime = null;
                         _updateDelayCancelSource = new CancellationTokenSource();
-                        _updateTask = Task.Run(FlushSettingsUpdates);
+                        _updateTask = Task.Run((Func<Task>)FlushSettingsUpdates);
                     }
                     else
                     {
@@ -516,7 +516,9 @@ namespace Microsoft.MIDebugEngine
                 IEnumerable<Guid> categories = _commandFactory.GetSupportedExceptionCategories();
                 foreach (Guid categoryId in categories)
                 {
-                    using (RegistryKey categoryKey = exceptionKey.Value?.OpenSubKey(categoryId.ToString("B", CultureInfo.InvariantCulture)))
+                    if(exceptionKey.Value == null)
+                        continue;
+                    using (RegistryKey categoryKey = exceptionKey.Value.OpenSubKey(categoryId.ToString("B", CultureInfo.InvariantCulture)))
                     {
                         ExceptionCategorySettings categorySettings = new ExceptionCategorySettings(this, categoryKey);
                         categoryMap.Add(categoryId, categorySettings);

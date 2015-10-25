@@ -67,6 +67,10 @@
       <HintPath>..\packages\VSSDK.Debugger.Interop.11.11.0.4\lib\net20\Microsoft.VisualStudio.Debugger.Interop.11.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Debugger.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\VSSDK.Debugger.Interop.12.12.0.4\lib\net20\Microsoft.VisualStudio.Debugger.Interop.12.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Debugger.InteropA, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\VSSDK.Debugger.Interop.9.9.0.4\lib\net20\Microsoft.VisualStudio.Debugger.InteropA.dll</HintPath>
       <Private>False</Private>
@@ -167,8 +171,8 @@
     <Compile Include="Natvis.impl\VsNatvisProject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Engine.Impl\EngineUtils.cs" />
-    <Compile Include="ResourceStrings.Designer.cs">
     <Compile Include="Engine.Impl\ExceptionManager.cs" />
+    <Compile Include="ResourceStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceStrings.resx</DependentUpon>

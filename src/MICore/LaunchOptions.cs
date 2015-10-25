@@ -703,9 +703,10 @@ namespace MICore
                     deviceAppLauncher.Initialize(registryRoot, eventCallback);
                     deviceAppLauncher.SetLaunchOptions(exePath, args, dir, launcherXmlOptions, targetEngine);
                 }
-                catch (Exception e) when (!(e is InvalidLaunchOptionsException))
+                catch (Exception e)// when (!(e is InvalidLaunchOptionsException))
                 {
-                    throw new InvalidLaunchOptionsException(e.Message);
+                    if(!(e is InvalidLaunchOptionsException))
+                        throw new InvalidLaunchOptionsException(e.Message);
                 }
 
                 LaunchOptions debuggerLaunchOptions;

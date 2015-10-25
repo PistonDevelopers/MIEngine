@@ -799,7 +799,7 @@ namespace Microsoft.MIDebugEngine
             _connected = true;
 
             // Send any strings we got before the process came up
-            if (_pendingMessages?.Length != 0)
+            if (_pendingMessages != null && _pendingMessages.Length != 0)
             {
                 _callback.OnOutputString(_pendingMessages.ToString());
                 _pendingMessages = null;

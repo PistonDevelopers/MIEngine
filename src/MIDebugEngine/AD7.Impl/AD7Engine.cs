@@ -300,7 +300,8 @@ namespace Microsoft.MIDebugEngine
         // Removes the list of exceptions the IDE has set for a particular run-time architecture or language.
         int IDebugEngine2.RemoveAllSetExceptions(ref Guid guidType)
         {
-            _debuggedProcess?.ExceptionManager.RemoveAllSetExceptions(guidType);
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.RemoveAllSetExceptions(guidType);
             return Constants.S_OK;
         }
 
@@ -308,7 +309,8 @@ namespace Microsoft.MIDebugEngine
         // The sample engine does not support exceptions in the debuggee so this method is not actually implemented.       
         int IDebugEngine2.RemoveSetException(EXCEPTION_INFO[] pException)
         {
-            _debuggedProcess?.ExceptionManager.RemoveSetException(ref pException[0]);
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.RemoveSetException(ref pException[0]);
             return Constants.S_OK;
         }
 
@@ -316,7 +318,8 @@ namespace Microsoft.MIDebugEngine
         // The sample engine does not support exceptions in the debuggee so this method is not actually implemented.
         int IDebugEngine2.SetException(EXCEPTION_INFO[] pException)
         {
-            _debuggedProcess?.ExceptionManager.SetException(ref pException[0]);
+            if(_debuggedProcess != null)
+                _debuggedProcess.ExceptionManager.SetException(ref pException[0]);
             return Constants.S_OK;
         }
 
