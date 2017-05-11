@@ -181,7 +181,8 @@
     <Error Condition="'$(MSBuildBinPath)'==''" Text="MSBuildBinPath msbuild property is undefined" />
     <Error Condition="!Exists('$(TargetFrameworkSDKToolsDirectory)xsd.exe')" Text="xsd.exe does not exist in the TargetFrameworkSDKToolsDirectory ($(TargetFrameworkSDKToolsDirectory)xsd.exe)." />
     <Error Condition="!Exists('$(TargetFrameworkSDKToolsDirectory)sgen.exe')" Text="sgen.exe does not exist in the TargetFrameworkSDKToolsDirectory ($(TargetFrameworkSDKToolsDirectory)xsd.exe)." />
-    <Error Condition="!Exists('$(MSBuildBinPath)\csc.exe')" Text="csc.exe does not exist in MSBuildBinPath ($(MSBuildBinPath))" />
+    <Error Condition="$(MSBuildToolsVersion) &lt; 15.0 AND !Exists('$(MSBuildBinPath)\csc.exe')" Text="csc.exe does not exist in MSBuildBinPath ($(MSBuildBinPath))"/>
+    <Error Condition="$(MSBuildToolsVersion) &gt;= 15.0 AND !Exists('$(MSBuildBinPath)\Roslyn\csc.exe')" Text="csc.exe does not exist in MSBuildBinPath ($(MSBuildBinPath)\Roslyn)"/>
     <!--Convert the .xsd -> types -->
     <MakeDir Condition="!Exists('$(IntermediateOutputPath)')" Directories="$(IntermediateOutputPath)" />
     <Exec Command="&quot;$(TargetFrameworkSDKToolsDirectory)xsd.exe&quot; &quot;LaunchOptions.xsd&quot; /classes /fields /namespace:$(RootNamespace).Xml.LaunchOptions /out:&quot;$(IntermediateOutputPath).&quot;" />
@@ -190,7 +191,8 @@
     <!--Update the checked in types designer file if it is out of date-->
     <Exec Command="ValidateDesignerFile.cmd LaunchOptions.xsd.types.desginer.cs $(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs &quot;$(IntermediateOutputPath)&quot;" />
     <!--Compile the types file into an assembly that we can use as input to sgen-->
-    <Exec Command="&quot;$(MSBuildBinPath)\csc.exe&quot; /out:$(IntermediateOutputPath)\LaunchOptions.xsd.types.dll /target:library $(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs /noconfig /r:$(MSBuildFrameworkToolsPath)\System.dll /r:$(MSBuildFrameworkToolsPath)\System.XML.dll" />
+    <Exec Condition="$(MSBuildToolsVersion) &lt; 15.0" Command="&quot;$(MSBuildBinPath)\csc.exe&quot; /out:$(IntermediateOutputPath)\LaunchOptions.xsd.types.dll /target:library $(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs /noconfig /r:$(MSBuildFrameworkToolsPath)\System.dll /r:$(MSBuildFrameworkToolsPath)\System.XML.dll" />
+    <Exec Condition="$(MSBuildToolsVersion) &gt;= 15.0" Command="&quot;$(MSBuildBinPath)\Roslyn\csc.exe&quot; /out:$(IntermediateOutputPath)\LaunchOptions.xsd.types.dll /target:library $(IntermediateOutputPath)LaunchOptions.xsd.types.desginer-candidate.cs /noconfig /r:$(MSBuildFrameworkToolsPath)\System.dll /r:$(MSBuildFrameworkToolsPath)\System.XML.dll" />
     <!--Run sgen and update our designer file for the serialization-->
     <Exec Command="ValidateSerializer.cmd $(IntermediateOutputPath)\LaunchOptions.xsd.types.dll LaunchOptions.xsd.serializer.designer.cs &quot;$(IntermediateOutputPath)&quot; &quot;$(TargetFrameworkSDKToolsDirectory)sgen.exe&quot;" />
   </Target>
